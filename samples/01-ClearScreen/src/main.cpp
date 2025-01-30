@@ -1,5 +1,10 @@
-#include <GameFramework/GameFramework.h>
-#include <GameFramework/Window.h>
+//----------------------------------------------------------------------------------------------------
+// main.cpp
+//----------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------
+#include "GameFramework/GameFramework.h"
+#include "GameFramework/Window.h"
 
 #include <dx12lib/CommandList.h>
 #include <dx12lib/CommandQueue.h>
@@ -19,48 +24,47 @@ std::shared_ptr<SwapChain> pSwapChain  = nullptr;
 
 Logger logger;
 
-int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLine, int nCmdShow )
+int WINAPI wWinMain( HINSTANCE const hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLine, int nCmdShow )
 {
-#if defined( _DEBUG )
+    #if defined( _DEBUG )
     // Always enable the Debug layer before doing anything with DX12.
     Device::EnableDebugLayer();
-#endif
+    #endif
 
     int retCode = 0;
 
-    auto& gf = GameFramework::Create( hInstance );
-    {
-        // Create a logger for logging messages.
-        logger = gf.CreateLogger( "ClearScreen" );
+    GameFramework& gf = GameFramework::Create( hInstance );
 
-        // Create a GPU device using the default adapter selection.
-        pDevice = Device::Create();
+    // Create a logger for logging messages.
+    logger = gf.CreateLogger( "ClearScreen" );
 
-        auto description = pDevice->GetDescription();
-        logger->info( L"Device Created: {}", description );
+    // Create a GPU device using the default adapter selection.
+    pDevice = Device::Create();
 
-        // Create a window:
-        pGameWindow = gf.CreateWindow( L"Clear Screen", 1920, 1080 );
+    std::wstring const description = pDevice->GetDescription();
+    logger->info( L"Device Created: {}", description );
 
-        // Create a swap chain for the window
-        pSwapChain = pDevice->CreateSwapChain( pGameWindow->GetWindowHandle() );
-        pSwapChain->SetVSync( false );
+    // Create a window:
+    pGameWindow = gf.CreateWindow( L"Clear Screen", 1920, 1080 );
 
-        // Register events.
-        pGameWindow->KeyPressed += &OnKeyPressed;
-        pGameWindow->Resize += &OnWindowResized;
-        pGameWindow->Update += &OnUpdate;
-        pGameWindow->Close += &OnWindowClose;
+    // Create a swap chain for the window
+    pSwapChain = pDevice->CreateSwapChain( pGameWindow->GetWindowHandle() );
+    pSwapChain->SetVSync( false );
 
-        pGameWindow->Show();
+    // Register events.
+    pGameWindow->KeyPressed += &OnKeyPressed;
+    pGameWindow->Resize += &OnWindowResized;
+    pGameWindow->Update += &OnUpdate;
+    pGameWindow->Close += &OnWindowClose;
 
-        retCode = GameFramework::Get().Run();
+    pGameWindow->Show();
 
-        // Release globals.
-        pSwapChain.reset();
-        pGameWindow.reset();
-        pDevice.reset();
-    }
+    retCode = GameFramework::Get().Run();
+
+    // Release globals.
+    pSwapChain.reset();
+    pGameWindow.reset();
+    pDevice.reset();
     // Destroy game framework resource.
     GameFramework::Destroy();
 
@@ -79,9 +83,9 @@ void OnUpdate( UpdateEventArgs& e )
 
     if ( totalTime > 1.0 )
     {
-        auto fps   = frameCount / totalTime;
-        frameCount = 0;
-        totalTime  = 0.0;
+        double const fps = frameCount / totalTime;
+        frameCount       = 0;
+        totalTime        = 0.0;
 
         logger->info( "FPS: {:.7}", fps );
 
@@ -90,12 +94,12 @@ void OnUpdate( UpdateEventArgs& e )
         pGameWindow->SetWindowTitle( buffer );
     }
 
-    auto& commandQueue = pDevice->GetCommandQueue( D3D12_COMMAND_LIST_TYPE_DIRECT );
-    auto  commandList  = commandQueue.GetCommandList();
+    CommandQueue&                      commandQueue = pDevice->GetCommandQueue( D3D12_COMMAND_LIST_TYPE_DIRECT );
+    std::shared_ptr<CommandList> const commandList  = commandQueue.GetCommandList();
 
-    auto& renderTarget = pSwapChain->GetRenderTarget();
+    RenderTarget const& renderTarget = pSwapChain->GetRenderTarget();
 
-    const FLOAT clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
+    FLOAT constexpr clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
     commandList->ClearTexture( renderTarget.GetTexture( AttachmentPoint::Color0 ), clearColor );
 
     commandQueue.ExecuteCommandList( commandList );
@@ -105,7 +109,7 @@ void OnUpdate( UpdateEventArgs& e )
 
 void OnKeyPressed( KeyEventArgs& e )
 {
-    logger->info( L"KeyPressed: {}", (wchar_t)e.Char );
+    logger->info( L"KeyPressed: {}", static_cast<wchar_t>(e.Char) );
 
     switch ( e.Key )
     {

@@ -100,7 +100,7 @@ public:
 };
 
 // Define the default event.
-using Event = Delegate<void(EventArgs&)>;
+using Event = Delegate<void( EventArgs& )>;
 
 /**
  * Update event args.
@@ -109,9 +109,8 @@ class UpdateEventArgs : public EventArgs
 {
 public:
     UpdateEventArgs( double deltaTime, double totalTime )
-    : DeltaTime( deltaTime )
-    , TotalTime( totalTime )
-    {}
+        : DeltaTime( deltaTime )
+          , TotalTime( totalTime ) {}
 
     // The elapsed time (in seconds)
     double DeltaTime;
@@ -119,20 +118,20 @@ public:
     double TotalTime;
 };
 
-using UpdateEvent = Delegate<void(UpdateEventArgs&)>;
+using UpdateEvent = Delegate<void( UpdateEventArgs& )>;
 
 class DPIScaleEventArgs : public EventArgs
 {
 public:
     typedef EventArgs base;
+
     DPIScaleEventArgs( float dpiScale )
-    : DPIScale( dpiScale )
-    {}
+        : DPIScale( dpiScale ) {}
 
     float DPIScale;
 };
 
-using DPIScaleEvent = Delegate<void(DPIScaleEventArgs&)>;
+using DPIScaleEvent = Delegate<void( DPIScaleEventArgs& )>;
 
 /**
  * EventArgs for a WindowClosing event.
@@ -141,10 +140,10 @@ class WindowCloseEventArgs : public EventArgs
 {
 public:
     using base = EventArgs;
+
     WindowCloseEventArgs()
-    : base()
-    , ConfirmClose( true )
-    {}
+        : base()
+          , ConfirmClose( true ) {}
 
     /**
      * The user can cancel a window closing operation by registering for the
@@ -156,12 +155,12 @@ public:
     bool ConfirmClose;
 };
 
-using WindowCloseEvent = Delegate<void(WindowCloseEventArgs&)>;
+using WindowCloseEvent = Delegate<void( WindowCloseEventArgs& )>;
 
 enum class KeyState
 {
     Released = 0,
-    Pressed  = 1,
+    Pressed = 1,
 };
 
 /**
@@ -171,26 +170,26 @@ class KeyEventArgs : public EventArgs
 {
 public:
     using base = EventArgs;
+
     KeyEventArgs( KeyCode key, unsigned int c, KeyState state, bool control, bool shift, bool alt )
-    : base()
-    , Key( key )
-    , Char( c )
-    , State( state )
-    , Control( control )
-    , Shift( shift )
-    , Alt( alt )
-    {}
+        : base()
+          , Key( key )
+          , Char( c )
+          , State( state )
+          , Control( control )
+          , Shift( shift )
+          , Alt( alt ) {}
 
     KeyCode      Key;   // The Key Code that was pressed or released.
     unsigned int Char;  // The 32-bit character code that was pressed. This
-                        // value will be 0 if it is a non-printable character.
+    // value will be 0 if it is a non-printable character.
     KeyState State;     // Was the key pressed or released?
     bool     Control;   // Is the Control modifier pressed
     bool     Shift;     // Is the Shift modifier pressed
     bool     Alt;       // Is the Alt modifier pressed
 };
 
-using KeyboardEvent = Delegate<void(KeyEventArgs&)>;
+using KeyboardEvent = Delegate<void( KeyEventArgs& )>;
 
 /**
  * MouseMotionEventArgs are used to indicate the mouse moved or was dragged over
@@ -200,18 +199,18 @@ class MouseMotionEventArgs : public EventArgs
 {
 public:
     using base = EventArgs;
+
     MouseMotionEventArgs( bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y )
-    : base()
-    , LeftButton( leftButton )
-    , MiddleButton( middleButton )
-    , RightButton( rightButton )
-    , Control( control )
-    , Shift( shift )
-    , X( x )
-    , Y( y )
-    , RelX( 0 )
-    , RelY( 0 )
-    {}
+        : base()
+          , LeftButton( leftButton )
+          , MiddleButton( middleButton )
+          , RightButton( rightButton )
+          , Control( control )
+          , Shift( shift )
+          , X( x )
+          , Y( y )
+          , RelX( 0 )
+          , RelY( 0 ) {}
 
     bool LeftButton;    // Is the left mouse button down?
     bool MiddleButton;  // Is the middle mouse button down?
@@ -219,27 +218,27 @@ public:
     bool Control;       // Is the CTRL key down?
     bool Shift;         // Is the Shift key down?
     int  X;             // The X-position of the cursor relative to the upper-left corner of
-                        // the client area (in pixels).
+    // the client area (in pixels).
     int Y;              // The Y-position of the cursor relative to the upper-left corner of
-                        // the client area (in pixels).
+    // the client area (in pixels).
     int RelX;           // How far the mouse moved since the last event (in pixels).
     int RelY;           // How far the mouse moved since the last event (in pixels).
 };
 
-using MouseMotionEvent = Delegate<void(MouseMotionEventArgs&)>;
+using MouseMotionEvent = Delegate<void( MouseMotionEventArgs& )>;
 
 enum class MouseButton
 {
-    None   = 0,
-    Left   = 1,
-    Right  = 2,
+    None = 0,
+    Left = 1,
+    Right = 2,
     Middle = 3
 };
 
 enum class ButtonState
 {
     Released = 0,
-    Pressed  = 1
+    Pressed = 1
 };
 
 class MouseButtonEventArgs : public EventArgs
@@ -248,18 +247,17 @@ public:
     using base = EventArgs;
 
     MouseButtonEventArgs( MouseButton button, ButtonState state, bool leftButton, bool middleButton, bool rightButton,
-                          bool control, bool shift, int x, int y )
-    : base()
-    , Button( button )
-    , State( state )
-    , LeftButton( leftButton )
-    , MiddleButton( middleButton )
-    , RightButton( rightButton )
-    , Control( control )
-    , Shift( shift )
-    , X( x )
-    , Y( y )
-    {}
+                          bool        control, bool       shift, int  x, int           y )
+        : base()
+          , Button( button )
+          , State( state )
+          , LeftButton( leftButton )
+          , MiddleButton( middleButton )
+          , RightButton( rightButton )
+          , Control( control )
+          , Shift( shift )
+          , X( x )
+          , Y( y ) {}
 
     MouseButton Button;        // The mouse button that was pressed or released.
     ButtonState State;         // Was the button pressed or released?
@@ -270,12 +268,12 @@ public:
     bool        Shift;         // Is the Shift key down?
 
     int X;  // The X-position of the cursor relative to the upper-left corner of
-            // the client area.
+    // the client area.
     int Y;  // The Y-position of the cursor relative to the upper-left corner of
-            // the client area.
+    // the client area.
 };
 
-using MouseButtonEvent = Delegate<void(MouseButtonEventArgs&)>;
+using MouseButtonEvent = Delegate<void( MouseButtonEventArgs& )>;
 
 /**
  * MouseWheelEventArgs indicates if the mouse wheel was moved and how much.
@@ -286,37 +284,37 @@ public:
     using base = EventArgs;
 
     MouseWheelEventArgs( float wheelDelta, bool leftButton, bool middleButton, bool rightButton, bool control,
-                         bool shift, int x, int y )
-    : base()
-    , WheelDelta( wheelDelta )
-    , LeftButton( leftButton )
-    , MiddleButton( middleButton )
-    , RightButton( rightButton )
-    , Control( control )
-    , Shift( shift )
-    , X( x )
-    , Y( y )
-    {}
+                         bool  shift, int       x, int           y )
+        : base()
+          , WheelDelta( wheelDelta )
+          , LeftButton( leftButton )
+          , MiddleButton( middleButton )
+          , RightButton( rightButton )
+          , Control( control )
+          , Shift( shift )
+          , X( x )
+          , Y( y ) {}
 
     float WheelDelta;   // How much the mouse wheel has moved. A positive value
-                        // indicates that the wheel was moved to the right. A
-                        // negative value indicates the wheel was moved to the
-                        // left.
+    // indicates that the wheel was moved to the right. A
+    // negative value indicates the wheel was moved to the
+    // left.
     bool LeftButton;    // Is the left mouse button down?
     bool MiddleButton;  // Is the middle mouse button down?
     bool RightButton;   // Is the right mouse button down?
     bool Control;       // Is the CTRL key down?
     bool Shift;         // Is the Shift key down?
     int  X;             // The X-position of the cursor relative to the upper-left corner of
-                        // the client area.
+    // the client area.
     int Y;              // The Y-position of the cursor relative to the upper-left corner of
-                        // the client area.
+    // the client area.
 };
-using MouseWheelEvent = Delegate<void(MouseWheelEventArgs&)>;
+
+using MouseWheelEvent = Delegate<void( MouseWheelEventArgs& )>;
 
 enum class WindowState
 {
-    Restored  = 0,  // The window has been resized.
+    Restored = 0,  // The window has been resized.
     Minimized = 1,  // The window has been minimized.
     Maximized = 2,  // The window has been maximized.
 };
@@ -330,11 +328,10 @@ public:
     using base = EventArgs;
 
     ResizeEventArgs( int width, int height, WindowState state )
-    : base()
-    , Width( width )
-    , Height( height )
-    , State( state )
-    {}
+        : base()
+          , Width( width )
+          , Height( height )
+          , State( state ) {}
 
     // The new width of the window
     int Width;
@@ -343,7 +340,8 @@ public:
     // If the window was minimized or maximized.
     WindowState State;
 };
-using ResizeEvent = Delegate<void(ResizeEventArgs&)>;
+
+using ResizeEvent = Delegate<void( ResizeEventArgs& )>;
 
 /**
  * Generic user event args.
@@ -352,18 +350,19 @@ class UserEventArgs : public EventArgs
 {
 public:
     using base = EventArgs;
+
     UserEventArgs( int code, void* data1, void* data2 )
-    : base()
-    , Code( code )
-    , Data1( data1 )
-    , Data2( data2 )
-    {}
+        : base()
+          , Code( code )
+          , Data1( data1 )
+          , Data2( data2 ) {}
 
     int   Code;
     void* Data1;
     void* Data2;
 };
-using UserEvent = Delegate<void(UserEventArgs&)>;
+
+using UserEvent = Delegate<void( UserEventArgs& )>;
 
 /**
  * Used to notify a runtime error occurred.
@@ -374,24 +373,24 @@ public:
     using base = EventArgs;
 
     RuntimeErrorEventArgs( const std::string& errorString, const std::string& compilerError )
-    : base()
-    , ErrorString( errorString )
-    , CompilerError( compilerError )
-    {}
+        : base()
+          , ErrorString( errorString )
+          , CompilerError( compilerError ) {}
 
     std::string ErrorString;
     std::string CompilerError;
 };
-using RuntimeErrorEvent = Delegate<void(RuntimeErrorEventArgs&)>;
+
+using RuntimeErrorEvent = Delegate<void( RuntimeErrorEventArgs& )>;
 
 enum class FileAction
 {
     Unknown,    // An unknown action triggered this event. (Should not happen, but
-                // I guess it's possible)
+    // I guess it's possible)
     Added,      // A file was added to a directory.
     Removed,    // A file was removed from a directory.
     Modified,   // A file was modified. This might indicate the file's timestamp
-                // was modified or another attribute was modified.
+    // was modified or another attribute was modified.
     RenameOld,  // The file was renamed and this event stores the previous name.
     RenameNew,  // The file was renamed and this event stores the new name.
 };
@@ -402,12 +401,12 @@ public:
     using base = EventArgs;
 
     FileChangedEventArgs( FileAction action, const std::wstring& path )
-    : base()
-    , Action( action )
-    , Path( path )
-    {}
+        : base()
+          , Action( action )
+          , Path( path ) {}
 
     FileAction   Action;  // The action that triggered this event.
     std::wstring Path;    // The file or directory path that was modified.
 };
-using FileChangeEvent = Delegate<void(FileChangedEventArgs&)>;
+
+using FileChangeEvent = Delegate<void( FileChangedEventArgs& )>;
